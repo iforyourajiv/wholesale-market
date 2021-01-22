@@ -196,8 +196,8 @@ class Wholesale_Market_Admin
 					),
 				),
 				array(
-					'title'       => __('Wholesale Price display suffix', 'wholesale-market'),
-					'id'          => 'Wholesale_price_display_suffix',
+					'title'       => __('Wholesale_price_display', 'wholesale-market'),
+					'id'          => 'Wholesale_price_display',
 					'default'     => '',
 					'placeholder' => __('N/A', 'wholesale-market'),
 					'type'        => 'text',

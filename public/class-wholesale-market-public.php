@@ -121,7 +121,7 @@ class Wholesale_Market_Public
 			);
 		}
 	}
-	
+
 	/**
 	 * Function :ced_add_user_request_for_wholesale_customer
 	 * Description:Saving a Checkbox value  Whether User Want to Become Wholesale User Or Not
@@ -132,8 +132,43 @@ class Wholesale_Market_Public
 	 */
 	public function ced_add_user_request_for_wholesale_customer($customer_id)
 	{
-		if ( isset( $_POST['wholesale_customer_request'] ) ) {
-			update_user_meta( $customer_id, 'wholesale_customer_request', wc_clean('requested') );
+		if (isset($_POST['wholesale_customer_request'])) {
+			update_user_meta($customer_id, 'wholesale_customer_request', wc_clean('requested'));
+		}
+	}
+
+
+	public function ced_show_wholesale_price()
+	{
+		global $product;
+		if ('yes' === get_option('wholesale_market_checkbox_general')) {
+			$checkstatus = get_option('wholesale_market_prices_show_user');
+			$wholesalePriceprefix = get_option('Wholesale_price_display');
+			$productType = $product->get_type();
+			$simpleProductPrice = get_post_meta(get_the_ID(), 'wholesale_simple_product_price', true);
+			if ('all_customer' === $checkstatus) {
+				if ('simple' === $productType) {
+					if (!empty($simpleProductPrice)) {
+						echo $wholesalePriceprefix . get_woocommerce_currency_symbol() . $simpleProductPrice;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				if (is_user_logged_in()) {
+					$user = new WP_User(get_current_user_id());
+					$role = $user->roles[0];
+					if ('wholesale_customer' === $role) {
+						if ('simple' === $productType) {
+							if (!empty($simpleProductPrice)) {
+								echo $wholesalePriceprefix . get_woocommerce_currency_symbol() . $simpleProductPrice;
+							}
+						} else {
+							return false;
+						}
+					}
+				}
+			}
 		}
 	}
 }

@@ -197,6 +197,7 @@ class Wholesale_Market
 		$this->loader->add_action('woocommerce_register_form', $plugin_public, 'ced__add_wholesale_customer_request_field_registration_form');
 		//Saving a Value if Checkbox is checked
 		$this->loader->add_action('woocommerce_created_customer', $plugin_public, 'ced_add_user_request_for_wholesale_customer');
+		$this->loader->add_action('woocommerce_after_shop_loop_item_title',$plugin_public,'ced_show_wholesale_price');
 	}
 
 	/**
