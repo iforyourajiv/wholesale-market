@@ -99,6 +99,14 @@ class Wholesale_Market_Public
 		 */
 
 		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/wholesale-market-public.js', array('jquery'), $this->version, false);
+		wp_enqueue_script('public_get_variation_js', plugin_dir_url(__FILE__) . 'js/get_variation_single_product.js', array('jquery'), $this->version, false);
+		wp_localize_script(
+			$this->plugin_name,
+			'public_get_variation_js', //handle name
+			array(
+				'ajax_url' => admin_url('admin-ajax.php')
+			)
+		);
 	}
 
 
@@ -138,6 +146,18 @@ class Wholesale_Market_Public
 	}
 
 
+	/**
+	 * Function :ced_show_wholesale_price
+	 * Description: Displaying a Wholesale Price on Shop Page
+	 * Version :1.0.0
+	 * @since  1.0.0
+	 * @var $product //Global Varibale For Product
+	 * @var $checkstatus //Checking Status for Settting of wholesale_market_prices to show user end
+	 * @var $productType //Getting Product Type
+	 * @var $simpleProductPrice //Product Price
+	 * @var $wholesalePriceprefix // Whole Sale Price Prefix
+	 * @return void
+	 */
 	public function ced_show_wholesale_price()
 	{
 		global $product;
@@ -149,7 +169,7 @@ class Wholesale_Market_Public
 			if ('all_customer' === $checkstatus) {
 				if ('simple' === $productType) {
 					if (!empty($simpleProductPrice)) {
-						echo $wholesalePriceprefix . get_woocommerce_currency_symbol() . $simpleProductPrice;
+						echo "<br>" . $wholesalePriceprefix . get_woocommerce_currency_symbol() . $simpleProductPrice;
 					}
 				} else {
 					return false;
@@ -161,7 +181,7 @@ class Wholesale_Market_Public
 					if ('wholesale_customer' === $role) {
 						if ('simple' === $productType) {
 							if (!empty($simpleProductPrice)) {
-								echo $wholesalePriceprefix . get_woocommerce_currency_symbol() . $simpleProductPrice;
+								echo "<br>" . $wholesalePriceprefix . get_woocommerce_currency_symbol() . $simpleProductPrice;
 							}
 						} else {
 							return false;
@@ -171,4 +191,66 @@ class Wholesale_Market_Public
 			}
 		}
 	}
+
+
+	/**
+	 * Function :ced_show_wholesale_variable_price_single_Page
+	 * Description: Displaying a Wholesale Price on Single Page
+	 * Version :1.0.0
+	 * @since  1.0.0
+	 * @var $product //Global Varibale For Product
+	 * @var $checkstatus //Checking Status for Settting of wholesale_market_prices to show user end
+	 * @var $productType //Getting Product Type
+	 * @var $simpleProductPrice //Product Price
+	 * @var $wholesalePriceprefix // Whole Sale Price Prefix
+	 * @return void
+	 */
+	public function ced_show_wholesale_variable_price_single_Page($variation_data, $product, $variation)
+	{
+		global $product;
+		if ('yes' === get_option('wholesale_market_checkbox_general')) {
+			$checkstatus = get_option('wholesale_market_prices_show_user');
+			$wholesalePriceprefix = get_option('Wholesale_price_display');
+			$productType = $product->get_type();
+			$variationId = $variation_data['variation_id'];
+			$variationProductPrice = get_post_meta($variationId, 'wholesale_variation_price', true);
+			if ('all_customer' === $checkstatus) {
+				if ('variable' === $productType) {
+					$variation_data['price_html'] .= $wholesalePriceprefix . ' <span class="price-suffix">' . wc_price($variationProductPrice, "wholesale-market") . '</span>';
+					return $variation_data;
+				} else {
+					return false;
+				}
+			} else {
+				if (is_user_logged_in()) {
+					$user = new WP_User(get_current_user_id());
+					$role = $user->roles[0];
+					if ('wholesale_customer' === $role) {
+						if ('varible' === $productType) {
+							$variation_data['price_html'] .= $wholesalePriceprefix . '</h4><span class="price-suffix">' . wc_price($variationProductPrice, "wholesale-market") . '</span>';
+							return $variation_data;
+						} else {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return $variation_data;
+	}
+
+
+
+	function ced_recalculate_price_wholesale( $cart_object ) {  
+   
+        foreach ( $cart_object->cart_contents as $key => $value ) {
+           
+               echo  $value['quantity'];
+            
+        }
+
 }
+}
+
+
+

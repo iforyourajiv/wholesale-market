@@ -234,6 +234,15 @@ class Wholesale_Market_Admin
 						'set_common_quantity'  => __('Set common minimum quantity for all', 'wholesale-market'),
 					),
 				),
+				array(
+					'title'       => __('Wholesale_minimum_quantity', 'wholesale-market'),
+					'id'          => 'Wholesale_minimum_quantity_all',
+					'default'     => '',
+					'placeholder' => __('Minimum Qunatity for All', 'wholesale-market'),
+					'type'        => 'number',
+					'wrapper_class' => 'form-row form-row-last',
+					'desc_tip'    => __('Text Field to store Minimum Qunatity for all product.', 'wholesale-market'),
+				),
 
 				array(
 					'type' => 'sectionend',

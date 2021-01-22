@@ -32,12 +32,31 @@
   $(document).ready(function () {
     $("#wholesale_market_checkbox_inventory_setting").click(function () {
       if ($("#wholesale_market_checkbox_inventory_setting").is(":checked")) {
-        console.log("hello");
-		$(".forminp-radio").show();
-		$('label[for="wholesale_market_prices_show_user"]').show();
+        $(".forminp-radio").show();
+        $('label[for="wholesale_market_prices_show_user"]').show();
+        let valueofradio = $(
+          'input[name="wholesale_market_prices_show_user"]'
+        ).val();
+        if (valueofradio == "set_common_quantity") {
+          $("#Wholesale_minimum_quantity_all").show();
+          $('label[for="Wholesale_minimum_quantity_all"]').show();
+        }
       } else {
-		$(".forminp-radio").hide();
-		$('label[for="wholesale_market_prices_show_user"]').hide();
+        $(".forminp-radio").hide();
+        $('label[for="wholesale_market_prices_show_user"]').hide();
+        $("#Wholesale_minimum_quantity_all").hide();
+        $('label[for="Wholesale_minimum_quantity_all"]').hide();
+      }
+    });
+
+    $('input[name="wholesale_market_prices_show_user"]').click(function () {
+      let valueofradio = $(this).val();
+      if (valueofradio == "set_common_quantity") {
+        $("#Wholesale_minimum_quantity_all").show();
+        $('label[for="Wholesale_minimum_quantity_all"]').show();
+      } else {
+        $("#Wholesale_minimum_quantity_all").hide();
+        $('label[for="Wholesale_minimum_quantity_all"]').hide();
       }
     });
   });

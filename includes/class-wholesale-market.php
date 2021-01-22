@@ -173,7 +173,7 @@ class Wholesale_Market
 		//Adding Custom Column in User Table Having a Name With 'WholeSale Customer'
 		$this->loader->add_action('manage_users_columns', $plugin_admin, 'ced_modify_user_columns');
 		//Adding Approve Button Where User Will Requested to become WholeSale customer
-		$this->loader->add_action('manage_users_custom_column',$plugin_admin, 'ced_user_posts_count_column_content', 10, 3);
+		$this->loader->add_action('manage_users_custom_column', $plugin_admin, 'ced_user_posts_count_column_content', 10, 3);
 		//Adding New Role WholeSale Customer 
 		$this->loader->add_action('admin_init', $plugin_admin, 'ced_add_wholesale_role');
 	}
@@ -193,11 +193,14 @@ class Wholesale_Market
 
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
-		//Adding a chekbox for Wholesale Customer if user wants to become  
+		//Adding a chekbox for Wholesale Customer if user wants to become
 		$this->loader->add_action('woocommerce_register_form', $plugin_public, 'ced__add_wholesale_customer_request_field_registration_form');
 		//Saving a Value if Checkbox is checked
 		$this->loader->add_action('woocommerce_created_customer', $plugin_public, 'ced_add_user_request_for_wholesale_customer');
-		$this->loader->add_action('woocommerce_after_shop_loop_item_title',$plugin_public,'ced_show_wholesale_price');
+		$this->loader->add_action('woocommerce_after_shop_loop_item_title', $plugin_public, 'ced_show_wholesale_price');
+		$this->loader->add_action('woocommerce_single_product_summary', $plugin_public, 'ced_show_wholesale_price');
+		$this->loader->add_filter( 'woocommerce_available_variation',$plugin_public, 'ced_show_wholesale_variable_price_single_Page', 10, 3 );
+		$this->loader->add_action('woocommerce_before_calculate_totals',$plugin_public,'ced_recalculate_price_wholesale');
 	}
 
 	/**
