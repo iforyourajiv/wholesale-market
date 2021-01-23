@@ -241,16 +241,75 @@ class Wholesale_Market_Public
 
 
 
-	function ced_recalculate_price_wholesale( $cart_object ) {  
-   
-        foreach ( $cart_object->cart_contents as $key => $value ) {
-           
-               echo  $value['quantity'];
-            
-        }
+	/**
+	 * ced_recalculate_price_wholesale
+	 * Description : Modifying Product Price if Product quantity equal or Greater Then to  Wholesale Quantity 
+	 * Version:1.0.0
+	 * @since 1.0.0
+	 * @param  mixed $cart_object
+	 * @var $checkSettingForQuantity
+	 * @var $commonQuantity
+	 * @var $productType
+	 * @var $productId
+	 * @var $variationId
+	 * @var $cartProductQuantity
+	 * @var $getPriceofProduct
+	 * 
+	 * @return void
+	 */
+	function ced_recalculate_price_wholesale($cart_object)
+	{
+		if ('yes' === get_option('wholesale_market_checkbox_general')) {
+			if (is_admin() && !defined('DOING_AJAX'))
+				return;
+			$checkSettingForQuantity = get_option('wholesale_market_prices_show_user');
+			// For Common Qunatity Setting
+			if ('set_common_quantity' == $checkSettingForQuantity) {
+				$commonQuantity = get_option('Wholesale_minimum_quantity_all');
+				foreach ($cart_object->cart_contents as $key => $value) {
+					$productType = $value["data"]->get_type();
+					$productId = $value['product_id'];
+					$variationId = $value['variation_id'];
+					if ('simple' == $productType) {
+						$cartProductQuantity = $value['quantity'];
+						if ($cartProductQuantity >= $commonQuantity) {
+							$getPriceofProduct = get_post_meta($productId, 'wholesale_simple_product_price', true);
+							$value["data"]->set_price($getPriceofProduct);
+						}
+					}
+					if ('variation' == $productType) {
+						$cartProductQuantity = $value['quantity'];
+						if ($cartProductQuantity >= $commonQuantity) {
+							$getPriceofProduct = get_post_meta($variationId, 'wholesale_variation_price', true);
+							$value["data"]->set_price($getPriceofProduct);
+						}
+					}
+				}
+			} else {
+				//For Product Level Quantity
+				foreach ($cart_object->cart_contents as $key => $value) {
+					$productType = $value["data"]->get_type();
+					$productId = $value['product_id'];
+					$variationId = $value['variation_id'];
+					if ('simple' == $productType) {
+						$cartProductQuantity = $value['quantity'];
+						$productWholesaleQuantity = get_post_meta($productId, 'wholesale_simple_product_min_qty', true);
+						if ($cartProductQuantity >= $productWholesaleQuantity) {
+							$getPriceofProduct = get_post_meta($productId, 'wholesale_simple_product_price', true);
+							$value["data"]->set_price($getPriceofProduct);
+						}
+					}
 
+					if ('variation' == $productType) {
+						$cartProductQuantity = $value['quantity'];
+						$variationProductWholesaleQuantity = get_post_meta($variationId, 'wholesale_variation_min_qty', true);
+						if ($cartProductQuantity >= $variationProductWholesaleQuantity) {
+							$getPriceofProduct = get_post_meta($variationId, 'wholesale_variation_price', true);
+							$value["data"]->set_price($getPriceofProduct);
+						}
+					}
+				}
+			}
+		}
+	}
 }
-}
-
-
-
