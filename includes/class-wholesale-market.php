@@ -25,17 +25,17 @@
  * @since      1.0.0
  * @package    Wholesale_Market
  * @subpackage Wholesale_Market/includes
- * @author     Cedcommerce <rajivranjanshrivastav@cedcoss.com>
+ * 
  */
-class Wholesale_Market
-{
+class Wholesale_Market {
+
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   protected
+	 * 
 	 * @var      Wholesale_Market_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
@@ -44,7 +44,7 @@ class Wholesale_Market
 	 * The unique identifier of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   protected
+	 * 
 	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
@@ -53,7 +53,7 @@ class Wholesale_Market
 	 * The current version of the plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   protected
+	 * 
 	 * @var      string    $version    The current version of the plugin.
 	 */
 	protected $version;
@@ -67,8 +67,7 @@ class Wholesale_Market
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		if (defined('WHOLESALE_MARKET_VERSION')) {
 			$this->version = WHOLESALE_MARKET_VERSION;
 		} else {
@@ -96,10 +95,9 @@ class Wholesale_Market
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * 
 	 */
-	private function load_dependencies()
-	{
+	private function load_dependencies() {
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
@@ -134,10 +132,9 @@ class Wholesale_Market
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * 
 	 */
-	private function set_locale()
-	{
+	private function set_locale() {
 
 		$plugin_i18n = new Wholesale_Market_i18n();
 
@@ -149,10 +146,9 @@ class Wholesale_Market
 	 * of the plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * 
 	 */
-	private function define_admin_hooks()
-	{
+	private function define_admin_hooks() {
 
 		$plugin_admin = new Wholesale_Market_Admin($this->get_plugin_name(), $this->get_version());
 
@@ -184,10 +180,9 @@ class Wholesale_Market
 	 * of the plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * 
 	 */
-	private function define_public_hooks()
-	{
+	private function define_public_hooks() {
 
 		$plugin_public = new Wholesale_Market_Public($this->get_plugin_name(), $this->get_version());
 
@@ -199,8 +194,8 @@ class Wholesale_Market
 		$this->loader->add_action('woocommerce_created_customer', $plugin_public, 'ced_add_user_request_for_wholesale_customer');
 		$this->loader->add_action('woocommerce_after_shop_loop_item_title', $plugin_public, 'ced_show_wholesale_price');
 		$this->loader->add_action('woocommerce_single_product_summary', $plugin_public, 'ced_show_wholesale_price');
-		$this->loader->add_filter( 'woocommerce_available_variation',$plugin_public, 'ced_show_wholesale_variable_price_single_Page', 10, 3 );
-		$this->loader->add_action('woocommerce_before_calculate_totals',$plugin_public,'ced_recalculate_price_wholesale');
+		$this->loader->add_filter( 'woocommerce_available_variation', $plugin_public, 'ced_show_wholesale_variable_price_single_Page', 10, 3 );
+		$this->loader->add_action('woocommerce_before_calculate_totals', $plugin_public, 'ced_recalculate_price_wholesale');
 	}
 
 	/**
@@ -208,10 +203,10 @@ class Wholesale_Market
 	 *
 	 * @since    1.0.0
 	 */
-	public function run()
-	{
+	public function run() {
 		$this->loader->run();
 	}
+
 
 	/**
 	 * The name of the plugin used to uniquely identify it within the context of
@@ -220,8 +215,7 @@ class Wholesale_Market
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_plugin_name()
-	{
+	public function get_plugin_name() {
 		return $this->plugin_name;
 	}
 
@@ -231,8 +225,7 @@ class Wholesale_Market
 	 * @since     1.0.0
 	 * @return    Wholesale_Market_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader()
-	{
+	public function get_loader() {
 		return $this->loader;
 	}
 
@@ -242,8 +235,7 @@ class Wholesale_Market
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version()
-	{
+	public function get_version() {
 		return $this->version;
 	}
 }

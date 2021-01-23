@@ -18,16 +18,16 @@
  *
  * @package    Wholesale_Market
  * @subpackage Wholesale_Market/public
- * @author     Cedcommerce <rajivranjanshrivastav@cedcoss.com>
+ *
  */
-class Wholesale_Market_Public
-{
+class Wholesale_Market_Public {
+
 
 	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * 
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
@@ -36,7 +36,7 @@ class Wholesale_Market_Public
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
+	 * 
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
@@ -48,11 +48,10 @@ class Wholesale_Market_Public
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct($plugin_name, $version)
-	{
+	public function __construct( $plugin_name, $version) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 	}
 
 	/**
@@ -60,8 +59,7 @@ class Wholesale_Market_Public
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles()
-	{
+	public function enqueue_styles() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -83,8 +81,7 @@ class Wholesale_Market_Public
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts()
-	{
+	public function enqueue_scripts() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -114,18 +111,18 @@ class Wholesale_Market_Public
 	 * Function:ced__add_wholesale_customer_request_field_registration_form
 	 * Description:Add a Checkbox to Select Whether User Want to Become Wholesale User Or Not
 	 * Version :1.0.0
+	 *
 	 * @since  1.0.0
 	 * @return void
 	 */
-	public function ced__add_wholesale_customer_request_field_registration_form()
-	{
+	public function ced__add_wholesale_customer_request_field_registration_form() {
 		if ('yes' === get_option('wholesale_market_checkbox_general')) {
 			woocommerce_form_field(
 				'wholesale_customer_request',
 				array(
 					'type'        => 'checkbox',
 					'label'       => 'Become WholeSale Customer'
-				),
+				)
 			);
 		}
 	}
@@ -134,12 +131,12 @@ class Wholesale_Market_Public
 	 * Function :ced_add_user_request_for_wholesale_customer
 	 * Description:Saving a Checkbox value  Whether User Want to Become Wholesale User Or Not
 	 * Version :1.0.0
+	 *
 	 * @since  1.0.0
 	 * @param  mixed $customer_id
 	 * @return void
 	 */
-	public function ced_add_user_request_for_wholesale_customer($customer_id)
-	{
+	public function ced_add_user_request_for_wholesale_customer( $customer_id) {
 		if (isset($_POST['wholesale_customer_request'])) {
 			update_user_meta($customer_id, 'wholesale_customer_request', wc_clean('requested'));
 		}
@@ -150,6 +147,7 @@ class Wholesale_Market_Public
 	 * Function :ced_show_wholesale_price
 	 * Description: Displaying a Wholesale Price on Shop Page
 	 * Version :1.0.0
+	 *
 	 * @since  1.0.0
 	 * @var $product //Global Varibale For Product
 	 * @var $checkstatus //Checking Status for Settting of wholesale_market_prices to show user end
@@ -158,18 +156,17 @@ class Wholesale_Market_Public
 	 * @var $wholesalePriceprefix // Whole Sale Price Prefix
 	 * @return void
 	 */
-	public function ced_show_wholesale_price()
-	{
+	public function ced_show_wholesale_price() {
 		global $product;
 		if ('yes' === get_option('wholesale_market_checkbox_general')) {
-			$checkstatus = get_option('wholesale_market_prices_show_user');
+			$checkstatus          = get_option('wholesale_market_prices_show_user_type');
 			$wholesalePriceprefix = get_option('Wholesale_price_display');
-			$productType = $product->get_type();
-			$simpleProductPrice = get_post_meta(get_the_ID(), 'wholesale_simple_product_price', true);
+			$productType          = $product->get_type();
+			$simpleProductPrice   = get_post_meta(get_the_ID(), 'wholesale_simple_product_price', true);
 			if ('all_customer' === $checkstatus) {
 				if ('simple' === $productType) {
 					if (!empty($simpleProductPrice)) {
-						echo "<br>" . $wholesalePriceprefix . get_woocommerce_currency_symbol() . $simpleProductPrice;
+						echo '<br>' . esc_html($wholesalePriceprefix) . esc_html(get_woocommerce_currency_symbol()) . esc_html($simpleProductPrice);
 					}
 				} else {
 					return false;
@@ -181,7 +178,7 @@ class Wholesale_Market_Public
 					if ('wholesale_customer' === $role) {
 						if ('simple' === $productType) {
 							if (!empty($simpleProductPrice)) {
-								echo "<br>" . $wholesalePriceprefix . get_woocommerce_currency_symbol() . $simpleProductPrice;
+								echo '<br>' . esc_html($wholesalePriceprefix) . esc_html(get_woocommerce_currency_symbol()) . esc_html($simpleProductPrice);
 							}
 						} else {
 							return false;
@@ -197,6 +194,7 @@ class Wholesale_Market_Public
 	 * Function :ced_show_wholesale_variable_price_single_Page
 	 * Description: Displaying a Wholesale Price on Single Page
 	 * Version :1.0.0
+	 * 
 	 * @since  1.0.0
 	 * @var $product //Global Varibale For Product
 	 * @var $checkstatus //Checking Status for Settting of wholesale_market_prices to show user end
@@ -205,18 +203,17 @@ class Wholesale_Market_Public
 	 * @var $wholesalePriceprefix // Whole Sale Price Prefix
 	 * @return void
 	 */
-	public function ced_show_wholesale_variable_price_single_Page($variation_data, $product, $variation)
-	{
+	public function ced_show_wholesale_variable_price_single_Page( $variation_data, $product, $variation) {
 		global $product;
 		if ('yes' === get_option('wholesale_market_checkbox_general')) {
-			$checkstatus = get_option('wholesale_market_prices_show_user');
-			$wholesalePriceprefix = get_option('Wholesale_price_display');
-			$productType = $product->get_type();
-			$variationId = $variation_data['variation_id'];
+			$checkstatus           = get_option('wholesale_market_prices_show_user_type');
+			$wholesalePriceprefix  = get_option('Wholesale_price_display');
+			$productType           = $product->get_type();
+			$variationId           = $variation_data['variation_id'];
 			$variationProductPrice = get_post_meta($variationId, 'wholesale_variation_price', true);
 			if ('all_customer' === $checkstatus) {
 				if ('variable' === $productType) {
-					$variation_data['price_html'] .= $wholesalePriceprefix . ' <span class="price-suffix">' . wc_price($variationProductPrice, "wholesale-market") . '</span>';
+					$variation_data['price_html'] .= $wholesalePriceprefix . ' <span class="price-suffix">' . wc_price($variationProductPrice, 'wholesale-market') . '</span>';
 					return $variation_data;
 				} else {
 					return false;
@@ -227,7 +224,7 @@ class Wholesale_Market_Public
 					$role = $user->roles[0];
 					if ('wholesale_customer' === $role) {
 						if ('varible' === $productType) {
-							$variation_data['price_html'] .= $wholesalePriceprefix . '</h4><span class="price-suffix">' . wc_price($variationProductPrice, "wholesale-market") . '</span>';
+							$variation_data['price_html'] .= $wholesalePriceprefix . '</h4><span class="price-suffix">' . wc_price($variationProductPrice, 'wholesale-market') . '</span>';
 							return $variation_data;
 						} else {
 							return false;
@@ -242,9 +239,10 @@ class Wholesale_Market_Public
 
 
 	/**
-	 * ced_recalculate_price_wholesale
+	 * Ced_recalculate_price_wholesale
 	 * Description : Modifying Product Price if Product quantity equal or Greater Then to  Wholesale Quantity 
 	 * Version:1.0.0
+	 * 
 	 * @since 1.0.0
 	 * @param  mixed $cart_object
 	 * @var $checkSettingForQuantity
@@ -254,58 +252,57 @@ class Wholesale_Market_Public
 	 * @var $variationId
 	 * @var $cartProductQuantity
 	 * @var $getPriceofProduct
-	 * 
 	 * @return void
 	 */
-	function ced_recalculate_price_wholesale($cart_object)
-	{
+	public function ced_recalculate_price_wholesale( $cart_object) {
 		if ('yes' === get_option('wholesale_market_checkbox_general')) {
-			if (is_admin() && !defined('DOING_AJAX'))
+			if (is_admin() && !defined('DOING_AJAX')) {
 				return;
+			}
 			$checkSettingForQuantity = get_option('wholesale_market_prices_show_user');
 			// For Common Qunatity Setting
 			if ('set_common_quantity' == $checkSettingForQuantity) {
 				$commonQuantity = get_option('Wholesale_minimum_quantity_all');
 				foreach ($cart_object->cart_contents as $key => $value) {
-					$productType = $value["data"]->get_type();
-					$productId = $value['product_id'];
+					$productType = $value['data']->get_type();
+					$productId   = $value['product_id'];
 					$variationId = $value['variation_id'];
 					if ('simple' == $productType) {
 						$cartProductQuantity = $value['quantity'];
 						if ($cartProductQuantity >= $commonQuantity) {
 							$getPriceofProduct = get_post_meta($productId, 'wholesale_simple_product_price', true);
-							$value["data"]->set_price($getPriceofProduct);
+							$value['data']->set_price($getPriceofProduct);
 						}
 					}
 					if ('variation' == $productType) {
 						$cartProductQuantity = $value['quantity'];
 						if ($cartProductQuantity >= $commonQuantity) {
 							$getPriceofProduct = get_post_meta($variationId, 'wholesale_variation_price', true);
-							$value["data"]->set_price($getPriceofProduct);
+							$value['data']->set_price($getPriceofProduct);
 						}
 					}
 				}
 			} else {
 				//For Product Level Quantity
 				foreach ($cart_object->cart_contents as $key => $value) {
-					$productType = $value["data"]->get_type();
-					$productId = $value['product_id'];
+					$productType = $value['data']->get_type();
+					$productId   = $value['product_id'];
 					$variationId = $value['variation_id'];
 					if ('simple' == $productType) {
-						$cartProductQuantity = $value['quantity'];
+						$cartProductQuantity      = $value['quantity'];
 						$productWholesaleQuantity = get_post_meta($productId, 'wholesale_simple_product_min_qty', true);
 						if ($cartProductQuantity >= $productWholesaleQuantity) {
 							$getPriceofProduct = get_post_meta($productId, 'wholesale_simple_product_price', true);
-							$value["data"]->set_price($getPriceofProduct);
+							$value['data']->set_price($getPriceofProduct);
 						}
 					}
 
 					if ('variation' == $productType) {
-						$cartProductQuantity = $value['quantity'];
+						$cartProductQuantity               = $value['quantity'];
 						$variationProductWholesaleQuantity = get_post_meta($variationId, 'wholesale_variation_min_qty', true);
 						if ($cartProductQuantity >= $variationProductWholesaleQuantity) {
 							$getPriceofProduct = get_post_meta($variationId, 'wholesale_variation_price', true);
-							$value["data"]->set_price($getPriceofProduct);
+							$value['data']->set_price($getPriceofProduct);
 						}
 					}
 				}

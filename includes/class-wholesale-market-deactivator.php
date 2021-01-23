@@ -18,7 +18,7 @@
  * @since      1.0.0
  * @package    Wholesale_Market
  * @subpackage Wholesale_Market/includes
- * @author     Cedcommerce <rajivranjanshrivastav@cedcoss.com>
+ * 
  */
 class Wholesale_Market_Deactivator {
 

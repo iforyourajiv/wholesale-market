@@ -18,16 +18,15 @@
  *
  * @package    Wholesale_Market
  * @subpackage Wholesale_Market/admin
- * @author     Cedcommerce <rajivranjanshrivastav@cedcoss.com>
+ *
  */
-class Wholesale_Market_Admin
-{
+class Wholesale_Market_Admin {
+
 
 	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
@@ -36,7 +35,6 @@ class Wholesale_Market_Admin
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0
-	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
@@ -48,11 +46,10 @@ class Wholesale_Market_Admin
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct($plugin_name, $version)
-	{
+	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 	}
 
 	/**
@@ -60,8 +57,7 @@ class Wholesale_Market_Admin
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles()
-	{
+	public function enqueue_styles() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -83,8 +79,7 @@ class Wholesale_Market_Admin
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts()
-	{
+	public function enqueue_scripts() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -106,12 +101,12 @@ class Wholesale_Market_Admin
 	 * Function:ced_add_settings_tab_wholesale_market
 	 * Description : Adding Custom Setting Tab "WholeSale Market " in Woocommerce Setting 
 	 * Version :1.0.0
+	 *
 	 * @since    1.0.0
 	 * @param  mixed $settings_tabs
 	 * @return $settings_tabs
 	 */
-	public static function ced_add_settings_tab_wholesale_market($settings_tabs)
-	{
+	public static function ced_add_settings_tab_wholesale_market( $settings_tabs ) {
 		$settings_tabs['wholesale'] = __('WholeSale Market', 'wholesale-market');
 		return $settings_tabs;
 	}
@@ -120,11 +115,11 @@ class Wholesale_Market_Admin
 	 * Funcion :get_sections
 	 * Version :1.0.0
 	 * Description : Creating New Sections
+	 *
 	 * @since  1.0.0
 	 * @return $sections with custom hook
 	 */
-	public function get_sections()
-	{
+	public function get_sections() {
 		$sections = array(
 			'' => __('General', 'wholesale-market'),
 			'inventory' => __('Inventory', 'wholesale-market')
@@ -137,11 +132,11 @@ class Wholesale_Market_Admin
 	 * Funcion :output_sections
 	 * Version :1.0.0
 	 * Description : Displaying Sections for Wholesale Tab
+	 *
 	 * @since  1.0.0
 	 * @return void
 	 */
-	public function output_sections()
-	{
+	public function output_sections() {
 
 		global $current_section;
 		$sections = $this->get_sections();
@@ -150,8 +145,8 @@ class Wholesale_Market_Admin
 		}
 		echo '<ul class="subsubsub">';
 		$array_keys = array_keys($sections);
-		foreach ($sections as $id => $label) {
-			echo '<li><a href="' . admin_url('admin.php?page=wc-settings&tab=wholesale&section=' . sanitize_title($id)) . '" class="' . ($current_section == $id ? 'current' : '') . '">' . $label . '</a> ' . (end($array_keys) == $id ? '' : '|') . ' </li>';
+		foreach ( $sections as $id => $label ) {
+			echo '<li><a href="' . esc_html(admin_url('admin.php?page=wc-settings&tab=wholesale&section=' . sanitize_title( $id ))) . '" class="' . ( $current_section == $id ? 'current' : '' ) . '">' . esc_html($label) . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
 		}
 		echo '</ul><br class="clear" />';
 	}
@@ -161,14 +156,14 @@ class Wholesale_Market_Admin
 	 * Function: get_settings
 	 * Version :1.0.0
 	 * Description : Creating Forms For Individual Sections
+	 *
 	 * @since  1.0.0
 	 * @return $settings
 	 */
-	public function get_settings()
-	{
+	public function get_settings() {
 		global $current_section;
 		$settings = array();
-		if ($current_section == '') {
+		if ('' == $current_section ) {
 
 			$settings = array(
 				array(
@@ -186,7 +181,7 @@ class Wholesale_Market_Admin
 				),
 				array(
 					'title'    => __('Show Wholesale Price', 'wholesale-market'),
-					'id'       => 'wholesale_market_prices_show_user',
+					'id'       => 'wholesale_market_prices_show_user_type',
 					'default'  => 'all_customer',
 					'type'     => 'radio',
 					'desc_tip' => __('This option is important as it will affect how you Show Wholesale price to user.', 'wholesale-market'),
@@ -241,6 +236,10 @@ class Wholesale_Market_Admin
 					'placeholder' => __('Minimum Qunatity for All', 'wholesale-market'),
 					'type'        => 'number',
 					'wrapper_class' => 'form-row form-row-last',
+					'custom_attributes' => array(
+						'min'  => 1,
+						'required' => 'required'
+					),
 					'desc_tip'    => __('Text Field to store Minimum Qunatity for all product.', 'wholesale-market'),
 				),
 
@@ -256,12 +255,12 @@ class Wholesale_Market_Admin
 	 * Function: output
 	 * Version :1.0.0
 	 * Description : Preparing Form For Sections
+	 *
 	 * @since  1.0.0
 	 * @return void
 	 * 
 	 */
-	public function output()
-	{
+	public function output() {
 		$settings = $this->get_settings();
 		WC_Admin_Settings::output_fields($settings);
 	}
@@ -269,12 +268,12 @@ class Wholesale_Market_Admin
 	 * Function: save
 	 * Version :1.0.0
 	 * Description : Saving Form and fields for sections
+	 *
 	 * @since  1.0.0
 	 * @return void
 	 * 
 	 */
-	public function save()
-	{
+	public function save() {
 
 		global $current_section;
 
@@ -293,12 +292,12 @@ class Wholesale_Market_Admin
 	 * Function :ced_product_edit_page_wholesale_setting_variation
 	 * Version :1.0.0
 	 * Description : Creating Wholesale Price and Minimum Quantity field for Variation Product on Product edit Page
+	 *
 	 * @since  1.0.0
 	 * @return void
 	 * 
 	 */
-	public function ced_product_edit_page_wholesale_setting_variation_fields($loop, $variation_data, $variation)
-	{
+	public function ced_product_edit_page_wholesale_setting_variation_fields( $loop, $variation_data, $variation ) {
 
 		if ('yes' === get_option('wholesale_market_checkbox_general')) {
 			$label = sprintf(
@@ -306,13 +305,14 @@ class Wholesale_Market_Admin
 				__('WholeSale Price (%s)', 'wholesale-market'),
 				get_woocommerce_currency_symbol()
 			);
-			$labelforminqty = sprintf(
-				/* translators: %s: currency symbol */
-				__('Minimum Quantity', 'wholesale-market'),
-			);
 			woocommerce_wp_text_input(array(
 				'id' => 'wholesale_variation_price[' . $loop . ']',
 				'label' => $label,
+				'type' => 'number',
+				'custom_attributes' => array(
+					'min'  => 1,
+					'required' => 'required'
+				),
 				'value' => get_post_meta($variation->ID, 'wholesale_variation_price', true),
 				'wrapper_class' => 'form-row form-row-first',
 			));
@@ -320,7 +320,11 @@ class Wholesale_Market_Admin
 			woocommerce_wp_text_input(array(
 				'id' => 'wholesale_variation_min_qty[' . $loop . ']',
 				'type' => 'number',
-				'label' => $labelforminqty,
+				'custom_attributes' => array(
+					'min'  => 1,
+					'required' => 'required'
+				),
+				'label' => 'Minimum Quantity',
 				'value' => get_post_meta($variation->ID, 'wholesale_variation_min_qty', true),
 				'wrapper_class' => 'form-row form-row-last',
 			));
@@ -328,19 +332,19 @@ class Wholesale_Market_Admin
 	}
 
 	/**
-	 * ced_save_product_edit_page_wholesale_setting_variation_fields
+	 * Function :ced_save_product_edit_page_wholesale_setting_variation_fields
 	 * Version :1.0.0
 	 * Description : Saving Wholesale Price and Minimum Quantity field Value for Variation Product on Product edit Page
+	 *
 	 * @param  mixed $variation_id
 	 * @param  mixed $i
 	 * @var $wholesale_price
 	 * @var $wholesale_min_qty
 	 * @return void
 	 */
-	function ced_save_product_edit_page_wholesale_setting_variation_fields($variation_id, $i)
-	{
-		$wholesale_price = $_POST['wholesale_variation_price'][$i];
-		$wholesale_min_qty = $_POST['wholesale_variation_min_qty'][$i];
+	public function ced_save_product_edit_page_wholesale_setting_variation_fields( $variation_id, $i ) {
+		$wholesale_price   = isset( $_POST['wholesale_variation_price'][$i] )? sanitize_text_field( $_POST['wholesale_variation_price'][$i] ) :false;
+		$wholesale_min_qty = isset($_POST['wholesale_variation_min_qty'][$i]) ? sanitize_text_field($_POST['wholesale_variation_min_qty'][$i]):false;
 		if (isset($wholesale_price)) {
 			update_post_meta($variation_id, 'wholesale_variation_price', esc_attr($wholesale_price));
 		}
@@ -353,12 +357,12 @@ class Wholesale_Market_Admin
 	 * Function :ced_product_edit_page_wholesale_setting_simple_product_fields
 	 * Version :1.0.0
 	 * Description : Creating Wholesale Price and Minimum Quantity field for Simple Product on Product edit Page
+	 *
 	 * @since  1.0.0
 	 * @return void
 	 * 
 	 */
-	public function ced_product_edit_page_wholesale_setting_simple_product_fields()
-	{
+	public function ced_product_edit_page_wholesale_setting_simple_product_fields() {
 
 		if ('yes' === get_option('wholesale_market_checkbox_general')) {
 			$label = sprintf(
@@ -366,11 +370,14 @@ class Wholesale_Market_Admin
 				__('WholeSale Price (%s)', 'wholesale-market'),
 				get_woocommerce_currency_symbol()
 			);
-			$labelforminqty = sprintf(
-				__('Minimum Quantity', 'wholesale-market'),
-			);
 			woocommerce_wp_text_input(array(
 				'id' => 'wholesale_simple_product_price',
+				'type' => 'number',
+				'custom_attributes' => array(
+					'min'  => 1,
+					'required' => 'required'
+				),
+
 				'label' => $label,
 				'value' => get_post_meta(get_the_ID(), 'wholesale_simple_product_price', true),
 
@@ -379,7 +386,11 @@ class Wholesale_Market_Admin
 			woocommerce_wp_text_input(array(
 				'id' => 'wholesale_simple_product_min_qty',
 				'type' => 'number',
-				'label' => $labelforminqty,
+				'custom_attributes' => array(
+					'min'  => 1,
+					'required' => 'required'
+				),
+				'label' => 'Minimum Quantity',
 				'value' =>  get_post_meta(get_the_ID(), 'wholesale_simple_product_min_qty', true),
 			));
 		}
@@ -390,16 +401,16 @@ class Wholesale_Market_Admin
 	 * Function :ced_save_product_edit_page_wholesale_setting_simple_product_fields
 	 * Version :1.0.0
 	 * Description : Saving Wholesale Price and Minimum Quantity field Value for Simple Product on Product edit Page
+	 *
 	 * @since  1.0.0
 	 * @param  mixed $post_id
 	 * @var $wholesale_price_simple_product
 	 * @var $wholesale_min_qty_simplt_product
 	 * @return void
 	 */
-	function ced_save_product_edit_page_wholesale_setting_simple_product_fields($post_id)
-	{
-		$wholesale_price_simple_product = $_POST['wholesale_simple_product_price'];
-		$wholesale_min_qty_simple_product = $_POST['wholesale_simple_product_min_qty'];
+	public function ced_save_product_edit_page_wholesale_setting_simple_product_fields( $post_id ) {
+		$wholesale_price_simple_product   = isset($_POST['wholesale_simple_product_price'])?sanitize_text_field( $_POST['wholesale_simple_product_price']):false;
+		$wholesale_min_qty_simple_product = isset($_POST['wholesale_simple_product_min_qty'])?sanitize_text_field( $_POST['wholesale_simple_product_min_qty']):false;
 		if (!empty($wholesale_price_simple_product)) {
 			update_post_meta($post_id, 'wholesale_simple_product_price', esc_attr($wholesale_price_simple_product));
 		}
@@ -414,12 +425,12 @@ class Wholesale_Market_Admin
 	 *Function: ced_modify_user_columns
 	 * Description : Adding Custom Column in User Table Having a name "WholeSale Customer"
 	 * Version:1.0.0
+	 *
 	 * @since  1.0.0
 	 * @param  mixed $column_headers
 	 * @return $column_headers
 	 */
-	function ced_modify_user_columns($column_headers)
-	{
+	public function ced_modify_user_columns( $column_headers ) {
 		if ('yes' === get_option('wholesale_market_checkbox_general')) {
 			$column_headers['wholesale_customer'] = 'WholeSale Customer';
 		}
@@ -431,14 +442,14 @@ class Wholesale_Market_Admin
 	 * Description : Adding a "Approve" Button Custom Column in User Table Having a name "WholeSale Customer"
 	 * 				 If User has been applied for Wholesale customer
 	 * Version:1.0.0
+	 *
 	 * @since  1.0.0
 	 * @param  mixed $column_name
 	 * @param  mixed $value
 	 * @param  mixed $user_id
 	 * @return $column_headers
 	 */
-	function ced_user_posts_count_column_content($value, $column_name, $user_id)
-	{
+	public function ced_user_posts_count_column_content( $value, $column_name, $user_id ) {
 		if ('yes' === get_option('wholesale_market_checkbox_general')) {
 			if ('wholesale_customer' == $column_name) {
 				$get_status_wholesale_customer = get_user_meta($user_id, 'wholesale_customer_request', true);
@@ -455,15 +466,14 @@ class Wholesale_Market_Admin
 		return $value;
 	}
 
-	public function ced_add_wholesale_role()
-	{
+	public function ced_add_wholesale_role() {
 		add_role('wholesale_customer', __('WholeSale Customer'), array(
 			'read' => true, // allows that capability
 		));
 
 		if (isset($_GET['approve'])) {
-			$user_id = $_REQUEST['user_id'];
-			$user = new WP_User($user_id);
+			$user_id = isset($_REQUEST['user_id'])?sanitize_text_field( $_REQUEST['user_id'] ):false;
+			$user    = new WP_User($user_id);
 			// Remove role
 			$user->remove_role($user->roles[0]);
 			// Add role
