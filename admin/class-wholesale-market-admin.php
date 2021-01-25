@@ -477,12 +477,26 @@ class Wholesale_Market_Admin {
 							</form>";
 
 					return $html;
-				}
+				}else {
+					$get_status_wholesale_customer = get_user_meta($user_id, 'wholesale_customer_request', true);
+					$user = new WP_User($user_id);
+					if('wholesale_customer'==$user->roles[0]){
+						$html = "<input type='button' id='approved' class='button action' value='Approved'>";
+						return $html;
+					}
+			}
 			}
 		}
 		return $value;
 	}
-
+	
+	/**
+	 * Function: ced_add_wholesale_role
+	 * Version:1.0.0
+	 * Description : Adding a Role 'Wholesale Customer' by clicking Approve button
+	 * @since  1.0.0
+	 * @return void
+	 */
 	public function ced_add_wholesale_role() {
 		add_role('wholesale_customer', __('WholeSale Customer'), array(
 			'read' => true, // allows that capability
