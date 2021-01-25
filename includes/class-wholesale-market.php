@@ -190,11 +190,15 @@ class Wholesale_Market {
 		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 		//Adding a chekbox for Wholesale Customer if user wants to become
 		$this->loader->add_action('woocommerce_register_form', $plugin_public, 'ced__add_wholesale_customer_request_field_registration_form');
-		//Saving a Value if Checkbox is checked
+		//Saving a Value if Checkbox is checked For Wholesale Customer
 		$this->loader->add_action('woocommerce_created_customer', $plugin_public, 'ced_add_user_request_for_wholesale_customer');
+		//Showing Wholesale Price on Shop Page
 		$this->loader->add_action('woocommerce_after_shop_loop_item_title', $plugin_public, 'ced_show_wholesale_price');
+		//Showing Wholesale Price on Single Product Page
 		$this->loader->add_action('woocommerce_single_product_summary', $plugin_public, 'ced_show_wholesale_price');
+		//Showing Wholesale Price on Single Product Page For Variable Products
 		$this->loader->add_filter( 'woocommerce_available_variation', $plugin_public, 'ced_show_wholesale_variable_price_single_Page', 10, 3 );
+		//Calculating Price Accoridng To Wholsale Quantity Setting For Cart Page And Checkout Page
 		$this->loader->add_action('woocommerce_before_calculate_totals', $plugin_public, 'ced_recalculate_price_wholesale');
 	}
 
