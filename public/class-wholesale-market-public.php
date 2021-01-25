@@ -23,6 +23,7 @@
 class Wholesale_Market_Public {
 
 
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -123,6 +124,17 @@ class Wholesale_Market_Public {
 					'type'        => 'checkbox',
 					'label'       => 'Become WholeSale Customer'
 				)
+
+			);
+
+			woocommerce_form_field(
+				'wholesale_customer_request_noonce',
+				array(
+					'type'        => 'hidden',
+					'label'       => '',
+				),
+				wp_create_nonce( 'custome_request_for_wholesale_customer' )
+
 			);
 		}
 	}
@@ -137,8 +149,11 @@ class Wholesale_Market_Public {
 	 * @return void
 	 */
 	public function ced_add_user_request_for_wholesale_customer( $customer_id) {
-		if (isset($_POST['wholesale_customer_request'])) {
-			update_user_meta($customer_id, 'wholesale_customer_request', wc_clean('requested'));
+		$nonce = isset($_REQUEST['wholesale_customer_request_noonce']) ? sanitize_text_field($_REQUEST['wholesale_customer_request_noonce']) : false;
+		if (wp_verify_nonce($nonce, 'custome_request_for_wholesale_customer')) {
+			if (isset($_POST['wholesale_customer_request'])) {
+				update_user_meta($customer_id, 'wholesale_customer_request', wc_clean('requested'));
+			}
 		}
 	}
 
